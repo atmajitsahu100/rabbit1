@@ -1,0 +1,25 @@
+#!/bin/bash
+
+JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+APP_NAME="MyApp"
+JAR_FILE="app.jar"
+LOG_FILE="app.log"
+
+JAVA_OPTS="-Xms512m -Xmx1024m"
+JAVA_OPTS="$JAVA_OPTS -XX:+UseG1GC"
+JAVA_OPTS="$JAVA_OPTS -XX:InitiatingHeapOccupancyPercent=45"
+JAVA_OPTS="$JAVA_OPTS -XX:MaxMetaspaceSize=256m"
+JAVA_OPTS="$JAVA_OPTS -XX:+HeapDumpOnOutOfMemoryError"
+JAVA_OPTS="$JAVA_OPTS -XX:HeapDumpPath=./heapdump.hprof"
+JAVA_OPTS="$JAVA_OPTS -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:./gc.log"
+JAVA_OPTS="$JAVA_OPTS -XX:+UnlockDiagnosticVMOptions -XX:+PrintSafepointStatistics -XX:PrintSafepointStatisticsCount=1"
+
+if [ ! -f "$JAR_FILE" ]; then
+    echo "Jar file $JAR_FILE not found!"
+    exit 1
+fi
+
+nohup "$JAVA_HOME/bin/java" $JAVA_OPTS -jar $JAR_FILE > $LOG_FILE 2>&1 &
+PID=$!
+echo "$APP_NAME started with PID $PID"
+echo $PID > app.pid

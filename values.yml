@@ -1,0 +1,22 @@
+replicaCount: 0 # Potential Issue: No replicas for high availability
+
+image:
+  repository: nginx
+  tag: ""
+  pullPolicy: IfNotPresent # Potential Issue: No tag specified for the image
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: http # Potential Issue: Non-numeric targetPort
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "128Mi" # Potential Issue: Limits are lower than requests
+    cpu: "50m"
+
+tolerations:
+  - effect: NoSchedule # Potential Issue: Toleration without a key or value

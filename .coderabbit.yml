@@ -1,0 +1,61 @@
+reviews:
+  path_instructions:
+    - path: "**/*.go"
+      instructions: |
+       
+         
+         "Verify that secret keys match the required format as below."
+         regex: "^[A-Za-z0-9+/]{32,64}$" 
+
+          Review the code for these metrics and generate a detailed report:
+          http:
+            request_count:
+              description: "Total number of incoming requests per endpoint"
+            response_status:
+              description: "Count of responses by HTTP status codes (e.g., 200, 400, 500)"
+            latency:
+              description: "Time taken to process a request (average, min, max)"
+            error_rate:
+              description: "Percentage of requests that result in errors"
+        
+          application:
+            order_count:
+              description: "Total number of orders created"
+            order_update_count:
+              description: "Number of orders updated"
+            order_delete_count:
+              description: "Number of orders deleted"
+            active_orders:
+              description: "Number of active orders stored in memory"
+            order_status_distribution:
+              description: "Breakdown of orders by their statuses"
+        
+          system:
+            cpu_usage:
+              description: "Percentage of CPU utilization by the server"
+            memory_usage:
+              description: "Amount of memory consumed by the application"
+            goroutine_count:
+              description: "Number of active goroutines in the application"
+        
+          network:
+            traffic_in_out:
+              description: "Amount of data sent and received over the network"
+            active_connections:
+              description: "Number of active HTTP connections"
+            dropped_connections:
+              description: "Connections that fail or time out"
+        
+          security:
+            unauthorized_access:
+              description: "Requests that fail authentication or authorization"
+            rate_limiting_violations:
+              description: "Requests blocked due to exceeding rate limits"
+        
+          observability:
+            logs:
+              description: "Logs collected per endpoint for anomaly detection"
+            trace_ids:
+              description: "Trace IDs for distributed request monitoring"
+            alerts:
+              description: "Alerts configured for failures or high latency"

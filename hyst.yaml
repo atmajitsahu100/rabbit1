@@ -1,0 +1,14 @@
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 200 
+          semaphore:
+            maxConcurrentRequests: -1 
+      circuitBreaker:
+        enabled: true
+        requestVolumeThreshold: -10 
+        sleepWindowInMilliseconds: 5000
+        errorThresholdPercentage: 200

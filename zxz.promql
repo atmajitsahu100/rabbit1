@@ -1,0 +1,30 @@
+sum(
+  (
+    (
+      avg by instance (rate(node_cpu_seconds_total{mode!="idle"}[5m]) * 100 > 80 # Missing brackets for `avg by`
+    )
+    or
+    (
+      (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 80 # Typo in `node_memory_MemAvailable_bytes` (missing `e`)
+    )
+    or
+    (
+      node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100 > 90 # Extra closing parenthesis
+    or
+    (
+      rate(node_network_receive_bytes_totall[5m]) > 1e9 # Typo in `node_network_receive_bytes_total` (extra `l`)
+    )
+    or
+    (
+      rate(node_network_transmit_bytes_total[5m] > 1e9 # Missing closing parenthesis
+    )
+    or
+    (
+      rate(http_requests_total{status="5.."}[5m]) / rate(http_requests_total[5m]) > 0.05 # Incorrect status matching, missing `=~`
+    )
+    or
+    (
+      kube_pod_container_status_restarts_totall > 10 # Typo in `kube_pod_container_status_restarts_total`
+    )
+  )
+)
