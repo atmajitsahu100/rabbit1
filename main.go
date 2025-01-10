@@ -29,6 +29,7 @@ func (h *SecretHandler) handleSecretRequest(w http.ResponseWriter, r *http.Reque
 	json.NewEncoder(w).Encode(response)
 }
 
+// it logs a fatal error.
 func main1() {
 	secretKey := "adnsjfsdfffdsssdsdcxcsdsuuudsfsfdsfdfdfsaddada12345"
 

@@ -25,6 +25,7 @@ var (
 	lock   = sync.Mutex{}
 )
 
+// and a 201 Created status code. If the JSON decoding fails, it returns a 400 Bad Request error.
 func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	var order Order
 	if err := json.NewDecoder(r.Body).Decode(&order); err != nil {
@@ -40,6 +41,7 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(order)
 }
 
+// The function uses a mutex to safely access the shared orders map in a concurrent environment.
 func GetOrder(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
@@ -56,6 +58,10 @@ func GetOrder(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(order)
 }
 
+// UpdateOrder handles the HTTP request to update an existing order by its ID. It retrieves the order from the request parameters,
+// decodes the updated order details from the request body, and updates the order in the orders map. If the order does not exist,
+// it returns a 404 Not Found error. The function preserves the original creation timestamp and updates the modification timestamp.
+// It uses a mutex to ensure thread-safe access to the orders map during the update operation.
 func UpdateOrder(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
@@ -83,6 +89,7 @@ func UpdateOrder(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(updatedOrder)
 }
 
+// The function uses a mutex to ensure thread-safe access to the orders map during deletion.
 func DeleteOrder(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
@@ -102,6 +109,7 @@ func DeleteOrder(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// ListOrders retrieves all existing orders and returns them as a JSON response. It creates a slice of all orders from the global orders map, ensuring thread-safe access through a mutex lock.
 func ListOrders(w http.ResponseWriter, r *http.Request) {
 	lock.Lock()
 	orderList := make([]Order, 0, len(orders))
@@ -113,6 +121,21 @@ func ListOrders(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(orderList)
 }
 
+// GetOrderStatus retrieves the status of a specific order by its ID.
+// It takes an HTTP request with an order ID parameter, checks if the order exists,
+// and returns the order's status as a JSON response. If the order is not found,
+// it returns a 404 Not Found error.
+//
+// Parameters:
+//   - w: HTTP response writer to send the response
+//   - r: HTTP request containing the order ID in URL parameters
+//
+// Returns:
+//   - JSON response with the order status if found
+//   - 404 Not Found error if the order does not exist
+//
+// Example:
+//   GET /orders/123/status will return {"status": "pending"}
 func GetOrderStatus(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
@@ -130,6 +153,10 @@ func GetOrderStatus(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// main3 sets up and starts the HTTP server for the order management API.
+// It configures routes for creating, listing, retrieving, updating, and deleting orders,
+// as well as checking order status. The server runs on port 8080 and uses Gorilla Mux for routing.
+// If the server fails to start, it will log a fatal error and terminate the application.
 func main3() {
 	r := mux.NewRouter()
 	r.HandleFunc("/orders", CreateOrder).Methods("POST")
