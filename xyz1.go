@@ -7,6 +7,11 @@ import (
 	"net/http"
 )
 
+// main2 sends a POST request to a predefined API endpoint with a test payload and custom headers.
+// It constructs an HTTP request with a JSON payload, sets specific headers including an API key,
+// and sends the request to the specified URL. The function prints the response status and body,
+// handling potential errors during request creation, execution, and response reading.
+// If any errors occur during the process, the function logs the error and terminates.
 func main2() {
 	dummy := "jfsjdfbsjfgfgfb2012123232324434343433"
 	xyz := "fdfndjfndjfndfndfjndfjfndfjddnnfdfjd67890"
