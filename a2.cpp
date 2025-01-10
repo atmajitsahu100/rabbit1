@@ -8,6 +8,12 @@ public:
     unordered_map<char, TrieNode*> children;
     bool isEndOfWord;
 
+    /**
+     * @brief Constructs a new TrieNode object.
+     * 
+     * Initializes a TrieNode with no word ending marker.
+     * By default, the node is not marked as the end of a word.
+     */
     TrieNode() {
         isEndOfWord = false;
     }
@@ -19,11 +25,35 @@ private:
     TrieNode* root;
 
 public:
+    /**
+     * @brief Constructs a new Trie object.
+     * 
+     * Initializes the Trie by creating a new root TrieNode.
+     * The root node serves as the starting point for all Trie operations,
+     * allowing insertion, search, and prefix matching of words.
+     * 
+     * @note The root node is initially empty and does not represent a complete word.
+     * @post A new Trie is created with an empty root node ready for word insertion.
+     */
     Trie() {
         root = new TrieNode();
     }
 
-    // Insert a word into the Trie
+    /**
+     * @brief Inserts a word into the Trie data structure.
+     *
+     * This method adds a word to the Trie by creating nodes for each character
+     * if they do not already exist. The last node is marked as the end of the word.
+     *
+     * @param word The string to be inserted into the Trie
+     * @complexity O(m), where m is the length of the word
+     * @note If the word already exists, this method will not create duplicate entries
+     * @thread_safety Not thread-safe; requires external synchronization
+     *
+     * @example
+     * Trie trie;
+     * trie.insert("apple");  // Adds "apple" to the Trie
+     */
     void insert(string word) {
         TrieNode* current = root;
         for (char c : word) {
@@ -35,7 +65,26 @@ public:
         current->isEndOfWord = true;
     }
 
-    // Search for a word in the Trie
+    /**
+     * @brief Searches for a complete word in the Trie data structure.
+     *
+     * @param word The string to search for in the Trie.
+     * @return bool True if the entire word exists in the Trie, false otherwise.
+     *
+     * @details This method traverses the Trie by following the characters of the input word.
+     * It checks each character's existence in the current node's children. If any character
+     * is not found, the method immediately returns false. If all characters are found,
+     * it returns whether the last node represents the end of a complete word.
+     *
+     * @note Time complexity: O(m), where m is the length of the word.
+     * @note Space complexity: O(1), as it uses a constant amount of extra space.
+     *
+     * @example
+     * Trie trie;
+     * trie.insert("apple");
+     * bool result1 = trie.search("apple");  // Returns true
+     * bool result2 = trie.search("app");    // Returns false
+     */
     bool search(string word) {
         TrieNode* current = root;
         for (char c : word) {
@@ -47,7 +96,26 @@ public:
         return current->isEndOfWord;
     }
 
-    // Check if there is any word in the Trie that starts with the given prefix
+    /**
+     * @brief Checks if any word in the Trie starts with the given prefix.
+     *
+     * @param prefix The prefix to search for in the Trie.
+     * @return bool True if at least one word in the Trie starts with the prefix, false otherwise.
+     *
+     * @details This method traverses the Trie by following the characters of the prefix.
+     * If all characters in the prefix are found in the Trie, it returns true, indicating
+     * that there is at least one word with this prefix. If any character is not found,
+     * it returns false.
+     *
+     * @note Time complexity: O(m), where m is the length of the prefix.
+     * @note Space complexity: O(1), as it only uses a constant amount of extra space.
+     *
+     * @example
+     * Trie trie;
+     * trie.insert("apple");
+     * bool result = trie.startsWith("app"); // Returns true
+     * result = trie.startsWith("ban");      // Returns false
+     */
     bool startsWith(string prefix) {
         TrieNode* current = root;
         for (char c : prefix) {
@@ -60,7 +128,24 @@ public:
     }
 };
 
-// Main function to test the implementation
+/**
+ * @brief Main function demonstrating Trie data structure functionality
+ *
+ * This function showcases the basic operations of a Trie, including:
+ * - Inserting words into the Trie
+ * - Searching for complete words
+ * - Checking for word prefixes
+ *
+ * The example demonstrates:
+ * 1. Inserting the word "apple"
+ * 2. Searching for "apple" (expected to return true)
+ * 3. Searching for "app" (expected to return false initially)
+ * 4. Checking if "app" is a prefix (expected to return true)
+ * 5. Inserting "app"
+ * 6. Searching for "app" again (expected to return true after insertion)
+ *
+ * @return int Exit status of the program (0 indicates successful execution)
+ */
 int main() {
     Trie trie;
     trie.insert("apple");

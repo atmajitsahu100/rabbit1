@@ -29,6 +29,10 @@ func (h *SecretHandler) handleSecretRequest(w http.ResponseWriter, r *http.Reque
 	json.NewEncoder(w).Encode(response)
 }
 
+// main1 initializes and starts an HTTP server that provides a secret key endpoint.
+// It sets up a request multiplexer, creates a secret handler with a predefined secret key,
+// and starts listening on port 8080. If the server fails to start, it logs a fatal error.
+// The server responds to requests at the "/get-secret" route with the configured secret key.
 func main1() {
 	secretKey := "adnsjfsdfffdsssdsdcxcsdsuuudsfsfdsfdfdfsaddada12345"
 

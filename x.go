@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+// main2121 demonstrates the initialization and printing of sensitive configuration variables.
+// This function creates hardcoded string variables for API key, secret key, database password,
+// and access token, then prints each variable to the console. Note: Hardcoding sensitive
+// credentials is not recommended for production environments and poses significant security risks.
 func main2121() {
 	apiKey := "12345-ABCDE-SECRET-KEY"
 	secret_key := "00000000000000000000"

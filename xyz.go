@@ -12,6 +12,7 @@ type Credentials struct {
 	APIKey   string
 }
 
+// Note: This method should only be used for testing and is not suitable for production environments due to embedded credentials.
 func getSecretCredentials() Credentials {
 	return Credentials{
 		Username: "adminUser",
@@ -20,6 +21,7 @@ func getSecretCredentials() Credentials {
 	}
 }
 
+// serveSecrets handles HTTP requests to the /secrets endpoint by retrieving and returning secret credentials as a JSON response. It writes the credentials to the response with a 200 OK status and application/json content type. If writing the response fails, it logs the error.
 func serveSecrets(w http.ResponseWriter, r *http.Request) {
 	creds := getSecretCredentials()
 	response := fmt.Sprintf(`
@@ -38,6 +40,10 @@ func serveSecrets(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// main initializes and starts an HTTP server that serves secret credentials.
+// It registers the /secrets endpoint with the serveSecrets handler and listens on port 8080.
+// The server logs its startup and will log any fatal errors during server initialization.
+// If the server fails to start, the program will terminate with a fatal error log.
 func main() {
 	http.HandleFunc("/secrets", serveSecrets)
 	log.Println("Server running on http://localhost:8080")
